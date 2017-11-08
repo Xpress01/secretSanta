@@ -1,15 +1,63 @@
 //SELECTOR CONTROLLER
 var selectorController = (function() {
     
-    function person(name, email, exclude) {
+    function person(name, email, exclude, id) {
         this.name = name;
         this.email = email;
-        this.exclide = exclude;
+        this.exclude = exclude;
+        this.id = id; 
     }
     
     var peopleArr = []; 
     
-    
+    return {
+        
+        addPerson: function(nam, email, excl, id) {
+            
+            var pers;
+            
+            pers = new person(nam, email, excl, id);
+            
+            peopleArr.push(pers);
+        
+        },
+        
+        calcSecretSanta: function() {
+            //Duplicate arr 
+            var selArr; 
+            selArr = peopleArr.slice(0); 
+            
+            /*
+            console.log(peopleArr);
+            peopleArr[1].chosen = selArr[2];
+            console.log(peopleArr[1].chosen.name);
+            */
+            
+            function genNumber(y) {
+                //y is the maximum range *max number not included
+                return Math.floor((Math.random() * y));
+            }
+            
+            for (i=0; i < peopleArr.length; i++) {
+                var randNum, selArrLen;  
+                
+                selArrLen = selArr.length; 
+                randNum = genNumber(selArrLen);
+                
+                
+                while (randNum === i || peopleArr[i].exclude === selArr[randNum].id ) {
+                    randNum = genNumber(selArrLen);
+                } 
+                
+                peopleArr[i].chosen = selArr[randNum]
+                console.log(peopleArr[i]);
+                
+                
+                
+            }
+            
+        }
+    }
     
     
 })();
@@ -25,7 +73,7 @@ var UIController = (function() {
         submitBtn: document.querySelector('.submitBTN'),
         inputName: '#person-',
         inputEmail: '#email-',
-        inputExclude: 'exclude-'
+        inputExclude: '#exclude-'
         
     }
     
@@ -51,18 +99,7 @@ var UIController = (function() {
 
             }
         },
-        
-        /*
-        getInputs: function() {
-            var numberOfPeople; 
-            
-            numberOfPeople = parseInt(DOMelements.selectInputValue.value);
-            
-            for (i = 0; i < numberOfPeople; i++) {
-                
-            }
-        },
-        */
+
         
         //Clear fields
         clearFields: function() {
@@ -127,22 +164,30 @@ var controller = (function(selCtrl, UICtrl) {
         
         //Get user input and add to arr
         for (i = 0; i < numOfPeople; i++) {
+            var id, name, email, exclude, curName, curEmail, curExclude; 
+             
             name = DOM.inputName + i;
             email = DOM.inputEmail + i; 
             exclude = DOM.inputExclude + i; 
+            id = i;
             
             curName = document.querySelector(name).value; 
             curEmail = document.querySelector(email).value; 
-            if (curExclude = document.querySelector(exclude).value == "") {
-                curExclude = 0
+            curExclude = parseInt(document.querySelector(exclude).value);
+            
+            if (curExclude > 0) {
+                curExclude = curExclude - 1; 
             } else {
-                curExclude = document.querySelector(exclude).value;
+                curExclude = ""; 
             }
             
+            //Add to Arr
+            selCtrl.addPerson(curName, curEmail, curExclude, id); 
             
-            console.log(curName + curEmail);
-        }
+        };
         
+        //Assign secret santa
+        selCtrl.calcSecretSanta();
     }
 
     return {
