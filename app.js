@@ -33,8 +33,7 @@ var selectorController = (function() {
         
         calcSecretSanta: function() {
             //Duplicate arr 
-            var selArr; 
-            data.selArr = data.peopleArr.slice(0);
+            data.selectArr = JSON.parse(JSON.stringify(data.peopleArr));
             
             /*
             console.log(peopleArr);
@@ -50,15 +49,15 @@ var selectorController = (function() {
             for (i=0; i < data.peopleArr.length; i++) {
                 var randNum, selArrLen;  
                 
-                selArrLen = data.selArr.length; 
+                selArrLen = data.selectArr.length; 
                 randNum = genNumber(selArrLen);
                 
                 
-                while (randNum === data.peopleArr[i].id || data.peopleArr[i].exclude == data.selArr[randNum].id ) {
+                while (randNum === data.peopleArr[i].id || data.peopleArr[i].exclude == data.selectArr[randNum].id ) {
                     randNum = genNumber(selArrLen);
                 } 
                 
-                data.peopleArr[i].chosen = data.selArr[randNum];
+                data.peopleArr[i].chosen = data.selectArr[randNum];
 
                 console.log(data.peopleArr[i]);
                 
