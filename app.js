@@ -8,7 +8,12 @@ var selectorController = (function() {
         this.id = id; 
     }
     
-    var peopleArr = []; 
+    
+
+    var data = {
+        peopleArr: [],
+        selectArr: [] 
+    }
     
     return {
         
@@ -18,14 +23,18 @@ var selectorController = (function() {
             
             pers = new person(nam, email, excl, id);
             
-            peopleArr.push(pers);
+            data.peopleArr.push(pers);
         
+        },
+        
+        clearData: function() {
+            data.peopleArr = []; 
         },
         
         calcSecretSanta: function() {
             //Duplicate arr 
             var selArr; 
-            selArr = peopleArr.slice(0); 
+            data.selArr = data.peopleArr.slice(0);
             
             /*
             console.log(peopleArr);
@@ -38,24 +47,29 @@ var selectorController = (function() {
                 return Math.floor((Math.random() * y));
             }
             
-            for (i=0; i < peopleArr.length; i++) {
+            for (i=0; i < data.peopleArr.length; i++) {
                 var randNum, selArrLen;  
                 
-                selArrLen = selArr.length; 
+                selArrLen = data.selArr.length; 
                 randNum = genNumber(selArrLen);
                 
                 
-                while (randNum === i || peopleArr[i].exclude === selArr[randNum].id ) {
+                while (randNum === data.peopleArr[i].id || data.peopleArr[i].exclude == data.selArr[randNum].id ) {
                     randNum = genNumber(selArrLen);
                 } 
                 
-                peopleArr[i].chosen = selArr[randNum]
-                console.log(peopleArr[i]);
-                
+                data.peopleArr[i].chosen = data.selArr[randNum];
+
+                console.log(data.peopleArr[i]);
                 
                 
             }
             
+        },
+        
+        test: function() {
+            return console.log(data.peopleArr);
+            return console.log(data.selectArr);
         }
     }
     
@@ -153,7 +167,11 @@ var controller = (function(selCtrl, UICtrl) {
     
     var clearFields = function() {
         
+        //Clear UI Fields
         UICtrl.clearFields();
+        
+        //Clear Date
+        selCtrl.clearData();
     }
     
     var submit = function() {
