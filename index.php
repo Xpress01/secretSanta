@@ -36,15 +36,15 @@
         <div class="row">
             <div class="col">
                 <label>1. Name:</label>
-                <input type="text" id="person1" class="name-input" placeholder="Name">
+                <input type="text" id="person-1" class="name-input" placeholder="Name">
             </div>
             <div class="col">
                 <label>Email:</label>
-                <input type="text" id="email1" class="email-input" placeholder="E-Mail">
+                <input type="text" id="email-1" class="email-input" placeholder="E-Mail">
             </div>
             <div class="col">
                 <label>Exclude:</label>
-                <input type="text" id="exclude1" class="exclude-input" placeholder="Use Person's Number to Exclude">
+                <input type="text" id="exclude-1" class="exclude-input" placeholder="Use Person's Number to Exclude">
             </div>
         </div>
         -->

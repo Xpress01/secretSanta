@@ -1,8 +1,13 @@
 //SELECTOR CONTROLLER
 var selectorController = (function() {
     
+    function person(name, email, exclude) {
+        this.name = name;
+        this.email = email;
+        this.exclide = exclude;
+    }
     
-    
+    var peopleArr = []; 
     
     
     
@@ -17,7 +22,11 @@ var UIController = (function() {
         selectInputValue: document.querySelector('.num_of_ppl'), 
         selectBtn: document.querySelector('.selectBTN'),
         formContainer: document.querySelector('.form-container'),
-        submitBtn: document.querySelector('.submitBTN')
+        submitBtn: document.querySelector('.submitBTN'),
+        inputName: '#person-',
+        inputEmail: '#email-',
+        inputExclude: 'exclude-'
+        
     }
     
     
@@ -33,15 +42,27 @@ var UIController = (function() {
             for (i = 0; i < num; i++) {
                 var html, htmlNew; 
 
-                html = '<div class="row"><div class="col"><label>%num%. Name:</label><input type="text" id="person%id%" class="name-input" placeholder="Name"></div><div class="col"><label>Email:</label><input type="text" id="email%id%" class="email-input" placeholder="E-Mail"></div><div class="col"><label>Exclude:</label><input type="text" id="exclude1" class="exclude-input" placeholder="Use Person\'s Number to Exclude"></div></div>'
+                html = '<div class="row"><div class="col"><label>%num%. Name:</label><input type="text" id="person-%id%" class="name-input" placeholder="Name"></div><div class="col"><label>Email:</label><input type="text" id="email-%id%" class="email-input" placeholder="E-Mail"></div><div class="col"><label>Exclude:</label><input type="text" id="exclude-%id%" class="exclude-input" placeholder="Use Person\'s Number to Exclude"></div></div>'
 
                 newHTML = html.replace('%num%', i + 1); 
-                newHTML = newHTML.replace('%id%', i + 1);
+                newHTML = newHTML.replace(/%id%/g, i);
 
                 DOMelements.formContainer.insertAdjacentHTML('beforeend', newHTML);
 
             }
         },
+        
+        /*
+        getInputs: function() {
+            var numberOfPeople; 
+            
+            numberOfPeople = parseInt(DOMelements.selectInputValue.value);
+            
+            for (i = 0; i < numberOfPeople; i++) {
+                
+            }
+        },
+        */
         
         //Clear fields
         clearFields: function() {
@@ -68,6 +89,8 @@ var controller = (function(selCtrl, UICtrl) {
         DOM.selectBtn.addEventListener('click', generateFields);
         
         DOM.newBtn.addEventListener('click', clearFields);
+        
+        DOM.submitBtn.addEventListener('click', submit);
       
     };
     
@@ -85,7 +108,7 @@ var controller = (function(selCtrl, UICtrl) {
             
         } else {
             
-            console.log('Add value');
+            event.preventDefault(); 
         }
         
             
@@ -94,6 +117,32 @@ var controller = (function(selCtrl, UICtrl) {
     var clearFields = function() {
         
         UICtrl.clearFields();
+    }
+    
+    var submit = function() {
+        var numOfPeople; 
+        
+        //Get number of participants
+        numOfPeople = parseInt(DOM.selectInputValue.value); 
+        
+        //Get user input and add to arr
+        for (i = 0; i < numOfPeople; i++) {
+            name = DOM.inputName + i;
+            email = DOM.inputEmail + i; 
+            exclude = DOM.inputExclude + i; 
+            
+            curName = document.querySelector(name).value; 
+            curEmail = document.querySelector(email).value; 
+            if (curExclude = document.querySelector(exclude).value == "") {
+                curExclude = 0
+            } else {
+                curExclude = document.querySelector(exclude).value;
+            }
+            
+            
+            console.log(curName + curEmail);
+        }
+        
     }
 
     return {
