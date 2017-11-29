@@ -12,7 +12,7 @@ var selectorController = (function() {
 
     var data = {
         peopleArr: [],
-        selectArr: [] 
+        selectArr: []
     }
     
     return {
@@ -24,51 +24,115 @@ var selectorController = (function() {
             pers = new person(nam, email, excl, id);
             
             data.peopleArr.push(pers);
+            data.selectArr.push(pers);
         
         },
         
         clearData: function() {
             data.peopleArr = []; 
+            data.selectArr = []; 
         },
         
         calcSecretSanta: function() {
-            //Duplicate arr 
-            data.selectArr = JSON.parse(JSON.stringify(data.peopleArr));
             
             /*
             console.log(peopleArr);
             peopleArr[1].chosen = selArr[2];
             console.log(peopleArr[1].chosen.name);
             */
+            var genBool, c; 
+            
+            c = 0;
+            genBool = true; 
             
             function genNumber(y) {
                 //y is the maximum range *max number not included
                 return Math.floor((Math.random() * y));
+            };
+            
+            function genSanta() {
+               
+                for (i = 0; i < data.peopleArr.length; i++) {
+                    var person, randNum, selectedPerson, n;  
+
+                    person = data.peopleArr[i]; 
+                    randNum = genNumber(data.selectArr.length);
+                    selectedPerson = data.selectArr[randNum]; 
+                    //Add counter to prevent infinite loop 
+                    n = 0; 
+
+                    console.log(randNum);
+                    
+                    //Make sure person's exclude is not selected and self. 
+                    while (selectedPerson.id == person.id || person.exclude === selectedPerson.id && n <= 5) {
+                        
+                        n++; 
+                        randNum = genNumber(data.selectArr.length);
+                        selectedPerson = data.selectArr[randNum];
+
+                        if (selectedPerson.id !== person.id && person.exclude !== selectedPerson.id) {
+                            console.log("new number " + randNum);
+                            break; 
+                            
+                        } else if (n > 5) {
+                            console.log('While loop end');
+                            genBool = false; 
+                            break; 
+                        }
+
+                    }
+                    
+                    if (genBool) {   
+                        //Add selected person to person object
+                        person.chosen = selectedPerson;
+
+                        //Remove selected person from array
+                        data.selectArr.splice(randNum, 1);
+
+                    } else {
+                        console.log("No more matches");
+                        break; 
+                    }
+                    
+                }
+            };
+            
+            function duplicateArr() {
+                
+                data.selectArr = data.peopleArr.slice(0);
+                
             }
             
-            for (i=0; i < data.peopleArr.length; i++) {
-                var randNum, selArrLen;  
+            //Call function to sort array 
+            genSanta(); 
+            
+            while (!genBool && c <= 10) {
+                //Increase var c to prevent infinite loop
+                c++; 
                 
-                selArrLen = data.selectArr.length; 
-                randNum = genNumber(selArrLen);
+                //Reset selector array
+                duplicateArr(); 
                 
+                //Reset genBool
+                genBool = true; 
                 
-                while (randNum === data.peopleArr[i].id || data.peopleArr[i].exclude == data.selectArr[randNum].id ) {
-                    randNum = genNumber(selArrLen);
-                } 
+                //Choose secret Santa
+                genSanta(); 
                 
-                data.peopleArr[i].chosen = data.selectArr[randNum];
-
-                console.log(data.peopleArr[i]);
-                
-                
+                //Break when everyone is selected or start again. 
+                if (data.selectArr.length === 0) {
+                    break;
+                } else if (c >= 10) {
+                    console.log("please check your inputs");
+                }
             }
+            
+            
             
         },
         
         test: function() {
-            return console.log(data.peopleArr);
-            return console.log(data.selectArr);
+            return data; 
         }
     }
     
@@ -169,7 +233,7 @@ var controller = (function(selCtrl, UICtrl) {
         //Clear UI Fields
         UICtrl.clearFields();
         
-        //Clear Date
+        //Clear Data
         selCtrl.clearData();
     }
     
