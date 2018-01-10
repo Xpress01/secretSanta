@@ -1,0 +1,23 @@
+.form-error-name {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-email {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-title {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-people {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
