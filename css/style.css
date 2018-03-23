@@ -1,0 +1,101 @@
+body {
+    background-image: url("../img/background.png");
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+
+#header {
+    background-image: url("../img/Banner.png");
+    height: 25vh;
+    background-size: cover;
+}
+
+#logo {
+    position: relative;
+    max-height: 50%;
+    left: 1%;
+    top: 10%;
+    
+}
+#header-text{
+    float: right;
+    position: relative;
+    top: 30%;
+    padding: 0 1%;
+    height: 70%;
+}
+#registration-text {
+    font-family: 'Ramabhadra', sans-serif;
+    color: #fff; 
+    text-transform: uppercase;
+    font-size: 1.30rem;
+
+    padding-bottom: 5px;
+}
+
+#new-btn {
+    float: right; 
+    background-color: #BCE0DA;
+    color: rgb(61, 61, 61);
+
+    font-family: 'Ramabhadra', sans-serif;
+    text-transform: uppercase;
+}
+
+.form-bg {
+    background: #fff;
+    padding: 30px;
+    border-radius: 25px;
+    margin-top: -3%;
+}
+
+
+.name-input {
+    background-image: url(../img/user.svg);
+    background-repeat: no-repeat;
+    background-size: 20px 18px;
+    background-position: 3px 4px;
+    text-indent: 30px;
+    border: 1px rgb(167, 166, 166) solid;
+}
+
+.email-input {
+    background-image: url(../img/email.svg);
+    background-repeat: no-repeat;
+    background-size: 20px 24px;
+    background-position: 4px 1px;
+    text-indent: 32px;
+    border: 1px rgb(167, 166, 166) solid;
+    z-index: 99;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    z-index: 1;
+}
+
+
+.form-error-name {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-email {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-title {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
+
+.form-error-people {
+    display: none;
+    font-size: 12px; 
+    color: red;
+}
