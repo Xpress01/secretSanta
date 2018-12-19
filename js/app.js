@@ -36,7 +36,7 @@ var selectorController = (function () {
 
         },
 
-        addTitle: function (title) {
+        addTitle: function(title) {
             data.title = title;
         },
 
@@ -44,7 +44,6 @@ var selectorController = (function () {
             data.peopleArr = [];
             data.selectArr = [];
             data.completeArr = [];
-            data.title = "";
         },
 
         calcSecretSanta: function () {
@@ -52,6 +51,7 @@ var selectorController = (function () {
 
             var genBool, c;
 
+            //C = counter (counter for how many times matches are tried) genBool = a switch to continue or stop
             c = 0;
             genBool = true;
 
@@ -113,33 +113,32 @@ var selectorController = (function () {
 
             }
 
-            //Call function to sort array 
+            //Start choosing names
             genSanta();
 
-            while (!genBool && c <= 10) {
-                //Increase var c to prevent infinite loop
-                c++;
+            return new Promise(function(resolve, reject) {
+                while (!genBool && c <= 10) {
+                    //Increase var c to prevent infinite loop
+                    c++;
 
-                //Reset selector array
-                duplicateArr();
+                    //Reset selector/duplicate array
+                    duplicateArr();
 
-                //Reset genBool
-                genBool = true;
+                    //Reset genBool
+                    genBool = true;
 
-                //Choose secret Santa
-                genSanta();
+                    //Choose secret Santa
+                    genSanta();
 
-                //Break when everyone is selected or start again. 
-                if (data.selectArr.length === 0) {
-                    break;
-                } else if (c > 10) {
-                    console.log("please check your inputs/exclusions");
-                    break;
+                    //Break when everyone is selected or start again. 
+                    if (data.selectArr.length === 0) {
+                        break;
+                    } else if (c > 10) {
+                        reject("Check");
+                        break;
+                    }
                 }
-            }
-
-
-
+            });
         },
 
         createSendArr: function () {
@@ -157,23 +156,26 @@ var selectorController = (function () {
 
         },
 
-        sendEmail: function () {
+        sendEmail: function() {
             var completeArr, title;
 
             completeArr = JSON.stringify(data.completeArr);
             title = data.title;
 
-            $.post('email.php', {
-                people_arr: completeArr,
-                title: title
-            }, function (data) {
-                console.log(data);
+            return new Promise(function(resolve, reject) {
+                $.post('email.php', {
+                    people_arr: completeArr,
+                    title: title
+                }, function(data) {
+                    resolve(data);
+                });
             });
-
+            
+            
         },
 
         test: function () {
-            return data;
+
         }
     }
 
@@ -184,31 +186,51 @@ var selectorController = (function () {
 //UI CONTROLLER
 var UIController = (function () {
     var DOMelements = {
-        newBtn: document.querySelector('.newBTN'),
-        selectInputValue: document.querySelector('.num_of_ppl'),
+        //BUTTONS
+        newBtn: document.querySelector('#new-btn'),
         selectBtn: document.querySelector('.selectBTN'),
-        formContainer: document.querySelector('.form-container'),
-        submitBtn: document.querySelector('.submitBTN'),
-        title: document.querySelector('.title'),
+        startBtn: document.querySelector('.startBTN'),
+        submitBtn: document.querySelector('#submit-btn'),
+
+        //ERRORS
         nameErr: document.querySelector('.form-error-name'),
         emailErr: document.querySelector('.form-error-email'),
         titleErr: document.querySelector('.form-error-title'),
         peopleErr: document.querySelector('.form-error-people'),
+
+        //INPUTS
+        selectInputValue: document.querySelector('.num_of_ppl'),
+        title: document.querySelector('#title'),
         inputName: '#person-',
         inputEmail: '#email-',
-        inputExclude: '#exclude-'
+        inputExclude: '#exclude-',
 
+        //MODAL
+        modalSubmitLoading: document.querySelector('#modal-submit-loading'),
+        modalSubmitSent: document.querySelector('#modal-submit-sent'),
+        modalSubmitErrorCheck: document.querySelector('#modal-submit-error-check'),
+        modalSubmitErrorMail: document.querySelector('#modal-submit-error-mail'),
+
+        formBox: document.querySelector('#form-box'),
+        formContainer: document.querySelector('#form-container'),
+        
+        
+
+        
+        
     }
-
 
     return {
 
+        //Return Dom Elements into global app 
         getDOMelements: function () {
             return DOMelements;
         },
 
         //Generate fields 
         genFields: function (num) {
+
+            DOMelements.formBox.style.display = 'inherit';
 
             var option;
             option = '<option value="">-</option>';
@@ -222,7 +244,7 @@ var UIController = (function () {
             for (i = 0; i < num; i++) {
                 var html, newHTML;
                 
-                html = '<tr><th scope="row">%num%.</th><td><input type="text" id="person-%id%" class="name-input" placeholder="Name" autocomplete="off"><div class="form-error-name">*Please Enter Valid Name</div></td><td><input type="text" id="email-%id%" class="email-input" placeholder="E-Mail" autocomplete="off"><div class="form-error-email">*Please Enter Valid E-Mail</div></td><td><select id="exclude-%id%" class="exclude-input">' + option + '</select></td></tr>';
+                html = '<tr><th scope="row"><div class="form__number"><span class="form__person-heading">Person </span>%num%.</div></th><td><span><i class="fas fa-user input--logo"></i></span> <input type="text" id="person-%id%" class="name-input input input--name" placeholder="Name" autocomplete="off" required><div class="form-error-name form__error">*Please Enter Valid Name</div></td><td><span><i class="fas fa-envelope input--logo"></i></span><input type="text" id="email-%id%" class="email-input input input--email" placeholder="E-Mail" autocomplete="off" required><div class="form-error-email form__error">*Please Enter Valid E-Mail</div></td><td><div class="input--exclude-text">Exclude?</div><select id="exclude-%id%" class="exclude-input input--exclude">' + option + '</select></td></tr>';
                 
                 newHTML = html.replace('%num%', i + 1);
                 newHTML = newHTML.replace(/%id%/g, i);
@@ -232,15 +254,51 @@ var UIController = (function () {
             }
         },
 
-
-        //Clear fields
+        //Clear input fields
         clearFields: function () {
+
+            DOMelements.title.value = "";
 
             DOMelements.selectInputValue.value = "";
 
             DOMelements.formContainer.textContent = "";
 
-        }
+            DOMelements.formBox.style.display = "none";
+
+        },
+
+        //Submit Modal Displays
+        hideModalLoading: function() {
+            DOMelements.modalSubmitLoading.style.display = "none";
+        },
+
+        hideModalSent: function() {
+            DOMelements.modalSubmitSent.style.display = "none";
+        },
+
+        hideModalErrorCheck: function() {
+            DOMelements.modalSubmitErrorCheck.style.display = "none";
+        },
+
+        hideModalErrorMail: function() {
+            DOMelements.modalSubmitErrorMail.style.display = "none";
+        },
+
+        showModalLoading: function() {
+            DOMelements.modalSubmitLoading.style.display = "inherit";
+        },
+
+        showModalSent: function() {
+            DOMelements.modalSubmitSent.style.display = "inherit";
+        }, 
+
+        showModalErrorCheck: function() {
+            DOMelements.modalSubmitErrorCheck.style.display = "inherit";
+        }, 
+
+        showModalErrorMail: function() {
+            DOMelements.modalSubmitErrorMail.style.display = "inherit";
+        }, 
 
     }
 
@@ -252,14 +310,12 @@ var controller = (function (selCtrl, UICtrl) {
 
     var setupEventListeners = function () {
 
-        //Get DOMelements
+        //Setup Event Listeners
         DOM = UICtrl.getDOMelements();
-
         DOM.selectBtn.addEventListener('click', generateFields);
-
         DOM.newBtn.addEventListener('click', clearFields);
-
         DOM.submitBtn.addEventListener('click', submit);
+        DOM.startBtn.addEventListener('click', getStarted);
 
     };
 
@@ -293,11 +349,12 @@ var controller = (function (selCtrl, UICtrl) {
         if (numOfPeople < 3) {
 
             document.querySelector('.form-error-people').style.display = 'block';
-
+            fieldCheck = false; 
         } else {
 
             //Clear Error
             document.querySelector('.form-error-people').style.display = 'none';
+            fieldCheck = true; 
             
         }
         
@@ -307,7 +364,7 @@ var controller = (function (selCtrl, UICtrl) {
             UICtrl.genFields(numOfPeople);
             
            //Close Modal
-            $('#exampleModal').modal('hide'); 
+            $( '#formModal' ).modal( 'hide' ); 
             
         }
 
@@ -320,9 +377,47 @@ var controller = (function (selCtrl, UICtrl) {
 
         //Clear Data
         selCtrl.clearData();
+
+        //Reset Submit Modal 
+        resetSubmitModal();
+    }
+
+    var getStarted = function() {
+        //Hide get started modal 
+        $( '#welcomeModal' ).modal( 'hide' ); 
+
+        //Show form modal
+        $( '#formModal' ).modal( 'show' ); 
+    }
+    
+    var submitModal = function(el) {
+        switch(el) {
+            case 'Check':
+                UICtrl.hideModalLoading(); 
+                UICtrl.showModalErrorCheck(); 
+                break; 
+            case 'Error':
+                UICtrl.hideModalLoading(); 
+                UICtrl.showModalErrorMail(); 
+                break; 
+            case 'Sent':
+                UICtrl.hideModalLoading(); 
+                UICtrl.showModalSent(); 
+                break;  
+        }
+    }
+
+    var resetSubmitModal = function() {
+        $( '#submitModal' ).modal( 'hide' ); 
+
+        UICtrl.showModalLoading(); 
+        UICtrl.hideModalSent();
+        UICtrl.hideModalErrorCheck();
+        UICtrl.hideModalErrorMail();
     }
 
     var submit = function () {
+
         var numOfPeople, submitBool;
 
         //Reset Bool 
@@ -358,7 +453,12 @@ var controller = (function (selCtrl, UICtrl) {
 
             curEmail = document.querySelector(email).value;
             //Email Validator 
-            if (curEmail === "") {
+            function validateEmail(email) {
+                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+
+            if (!validateEmail(curEmail)) {
                 document.querySelector(email).nextSibling.style.display = 'block';
                 submitBool = false;
                 break;
@@ -376,16 +476,20 @@ var controller = (function (selCtrl, UICtrl) {
         }
 
         if (submitBool) {
+            //Show submit modal
+            resetSubmitModal(); 
+            $( '#submitModal' ).modal( 'show' );
 
             //Assign secret santa
-            selCtrl.calcSecretSanta();
+            selCtrl.calcSecretSanta().catch(function(reject){submitModal(reject)});
 
             //Create a simple array to transport to PHP 
             selCtrl.createSendArr();
 
             //Send Email 
-            selCtrl.sendEmail();
+            selCtrl.sendEmail().then(function(resolve){submitModal(resolve)});
 
+            
         }
 
     }
@@ -398,11 +502,11 @@ var controller = (function (selCtrl, UICtrl) {
 
             //Diplay Modal 
             $(window).on('load', function () {
-                $('#exampleModal').modal('show');
+                $('#welcomeModal').modal('show');
             });
 
             console.log('App Started');
-        },
+        }
 
 
     }

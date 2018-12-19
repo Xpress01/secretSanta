@@ -1,0 +1,92 @@
+.form {
+
+    &__table {
+        @media screen and (max-width: 768px) {
+            text-align: center;
+        } 
+    }
+
+    &-container tr:not(:first-child) {
+        @media screen and (max-width: 768px) {
+            border-top: solid 2px $color-primary;
+        } 
+    }
+
+    &__heading {
+        font-size: 1.6em;
+        color: $color-primary;
+
+        @media screen and (max-width: 768px) {
+            display: none;
+        } 
+
+        &--number {
+            text-align: center;
+        }
+    }
+
+    &__error {
+        display: none; 
+        color: red; 
+    }
+
+    &__person-heading {
+        text-transform: uppercase;
+
+        @media screen and (min-width: 769px) {
+            display: none;
+        } 
+    }
+
+    &__number {
+        color: $color-primary; 
+        font-size: 1.4em;
+        text-align: center;
+    }
+}
+
+.input {
+    height: 2em;
+    width: 80%;
+    padding-left: 2.6em;
+    font-size: 1.6em;
+
+    &--logo {
+        font-size: 2.3em;
+        background-color: white;
+        border: 1px solid gray;
+        padding: .15em .3em;
+        position: absolute;
+        color: $color-primary;
+    }
+
+    &--exclude {
+        font-size: 1.8em;
+        width: 2em;
+        text-align: center;
+
+        @media screen and (max-width: 769px) {
+            width: 3em;
+        } 
+    }
+
+    &--exclude-text {
+        display: none; 
+        font-size: 1.4em; 
+        font-weight: 700;
+        color: $color-primary; 
+
+        @media screen and (max-width: 769px) {
+            display: inherit;
+        } 
+    }
+}
+
+//Manipulate table to have it stacked 
+
+
+table, thead, tbody, th, td, tr {
+    @media screen and (max-width: 768px) {
+        display: block;
+    } 
+}

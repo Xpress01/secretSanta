@@ -1,0 +1,15 @@
+.loader {
+    position: relative;
+    margin: 0 auto;
+    height: 8em;
+    width: 8em;
+    border: lightgray .75em solid;
+    border-radius: 50%;
+    border-top: $color-primary-dark .75em solid;
+    animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}

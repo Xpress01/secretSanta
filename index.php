@@ -3,10 +3,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ezGIFTex</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"> 
+<title>EZgiftEX</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/png" href="img/favicon.png">
 <link rel="stylesheet" href="/css/style.css">
-<link href="https://fonts.googleapis.com/css?family=Ramabhadra" rel="stylesheet">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({
@@ -29,53 +32,130 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<!-- Modals -->
+
+<!-- FORM MODAL -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h3>Title</h3>
-        <input type="text" class="title" placeholder="Title">
-        <div class="form-error-title">*Please Enter Valid Title</div>
-        <h3>How Many Participants?</h3>
-        <input type="number" class="num_of_ppl" placeholder="How many">
-        <div class="form-error-people">*Please Choose 3 or More Participants</div>
+    <div class="modal-content modal__container">
+      <div class="modal-header modal__title-container">
+        <h5 class="modal-title modal__title">New Exchange</h5>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary selectBTN">Submit</button>
+      <div class="modal-body modal__body modal__body--form">
+        <h4 class="modal__title--sub">Title</h4>
+        <input type="text" class="title" id="title" placeholder="Title" autocomplete="off">
+        <div class="form-error-title form__error">*Please Enter Valid Title</div>
+        <h4 class="modal__title--sub u-margin__top--sm">How Many Participants?</h4>
+        <input type="number" class="num_of_ppl" placeholder="How many">
+        <div class="form-error-people form__error">*Please Choose 3 or More Participants</div>
+      </div>
+      <div class="modal-footer modal__title-container">
+        <button type="button" class="btn selectBTN new__btn">Submit</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Header -->
-<header id="header">
-  <img src="/img/logo.png" alt="logo" id="logo" class="img-responsive">
-  <div id="header-text">
-  <div id="registration-text">No Registration or Sign Up Required</div>
-  <button type="button" class="btn newBTN" id="new-btn" data-toggle="modal" data-target="#exampleModal">New Exchange</button>
+<!-- SUBMIT MODAL -->
+<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal__container">
+      <div class="modal-header modal__title-container">
+        <h5 class="modal-title modal__title">Thank You</h5>
+      </div>
+      <div class="modal-body modal__body modal__body--submit">
+        <div class="modal-submit--loading" id="modal-submit-loading">
+          <div class="loader"></div>
+          <div class="modal-submit-text u-margin__top--sm">Please Wait While Your List Is Being Generated</div>
+        </div>
+        <div class="modal-submit--sent" id="modal-submit-sent">
+          <div class="modal-submit-text">
+            <p>Emails Sent!</p> 
+            <p>Thank you for using EZgiftEX!</p>
+            </div>
+        </div>
+        <div class="modal-submit--error-1" id="modal-submit-error-check">
+          <div class="modal-submit-text">
+            <p><span class="font-color--error">Error!</span><br></p>
+            <p>No matches can be made</p>
+            <p>Please Check Your Inputs and Exclusions</p>
+          </div>
+        </div>
+        <div class="modal-submit--error-2" id="modal-submit-error-mail">
+          <div class="modal-submit-text">
+            <p><span class="font-color--error">Error!</span><br></p>
+            <p>Error sending the email, please contact the administrator</p>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer modal__title-container modal-footer--submit">
+        <button type="button" class="btn new__btn" data-toggle="modal" data-target="#submitModal">Close</button>
+      </div>
+    </div>
   </div>
-  
+</div>
+
+<!-- WELCOME MODAL -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content modal__container">
+      <div class="modal-header modal__title-container">
+        <h5 class="modal-title modal__title">Welcome to EZGIFTEX</h5>
+      </div>
+      <div class="modal-body modal__body modal__body--welcome">
+        <p>EZgiftEX effortlessly helps you randomly match gift exchange participants for any size Secret Santa party!</p>
+        <p>EZgiftEX was made to fill a personal need, and has been made public for others to use and enjoy the holidays!</p>
+        Happy Easy Gift Exchanging!</p> 
+        <p>
+          <h4>How to Use:</h4>
+          <ul>
+            <li>Enter the Event Name</li>
+            <li>Enter the number of Participants</li> 
+            <li>Enter the name of Participant</li>
+            <li>Enter the emails of Participants</li>
+            <li>Click Submit, and all Participants will receive a random gift exchange partner!</li>
+          </ul>
+        </p>
+        <p>Note: To avoid gift exchanges amongst couples for example, the exclude column allows you to make sure the generator doesn’t 
+          match the participant of the line number specified by you.</p>  
+        <p>Disclaimer: All data is never shared as we highly value your privacy.</p> 
+      </div>
+      <div class="modal-footer modal__title-container">
+        <button type="button" class="btn startBTN new__btn">Get Started</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header__logo-box">
+    <img src="/img/logo.png" alt="logo" id="logo" class="header__logo">
+  </div>
+  <div class="header__text-box">
+    <button type="button" class="btn new__btn" id="new-btn" data-toggle="modal" data-target="#formModal">New Exchange</button>
+    <div id="registration-text" class="header__text">No Registration or Sign Up Required</div>
+  </div>
 </header>
     
 <!-- Form Body -->
- 
-<div class="container">
-  <div class="form-bg">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Email Adress</th>
-          <th scope="col">Exclude</th>
-        </tr>
-      </thead>
-      <tbody class="form-container">
-      </tbody>
-    </table>
-    <button type="submit" class="btn btn-primary submitBTN">Submit</button>
-  </div>
+<div class="form__box" id="form-box">
+  <table class="table table-striped form__table">
+    <thead>
+      <tr>
+        <th class="form__heading form__heading--number">#</th>
+        <th class="form__heading">Name</th>
+        <th class="form__heading">Email Address</th>
+        <th class="form__heading">Exclude</th>
+      </tr>
+    </thead>
+    <tbody class="form-container" id="form-container">
+    </tbody>
+  </table>
+  <hr>
+  <div class="form-button-box">
+    <button type="submit" class="btn btn-primary submitBTN new__btn" id="submit-btn">Submit</button>
+  </div> 
 </div>
 
 

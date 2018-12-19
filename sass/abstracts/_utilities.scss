@@ -1,0 +1,25 @@
+.u-margin {
+    &__bottom {
+        &--sm {
+            margin-bottom: 1em;
+        }
+        &--md {
+            margin-bottom: 3em;
+        }
+        &--lg {
+            margin-bottom: 6em;
+        }
+    }
+
+    &__top {
+        &--sm {
+            margin-top: 1em;
+        }
+        &--md {
+            margin-top: 3em;
+        }
+        &--lg {
+            margin-top: 6em;
+        }
+    }
+}

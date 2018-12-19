@@ -1,0 +1,21 @@
+.form__box {
+    display: none;
+    background-color: white;
+    box-shadow: 0px 9px 45px 1px rgba(0,0,0,0.75);
+    width: 60%;
+    margin: 0 auto;
+    margin-top: -5em;
+    margin-bottom: 5em; 
+    border-radius: 1.5em;
+    padding-bottom: 2.5em; 
+    overflow: hidden;
+
+    @media screen and (max-width: 991px) {
+        margin-top: 0;
+        width: 95%;
+    } 
+}
+
+.form-button-box {
+    text-align: center;
+}

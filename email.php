@@ -4,8 +4,15 @@ $arr = $_POST['people_arr'];
 $title = $_POST['title'];
 $arr = json_decode($arr);
 
-var_dump($arr);
-var_dump($title); 
+function emailBody($test, $title) {
+    return ('<body>
+    <p align="center" style="font-size: 22px; font-weight:800; padding:2em; background-color:#6e0000; color:white">Thank You For Using EZgiftEX!</p>
+    <p>&nbsp;</p>
+    <h1 style="text-align: center">' . $title . ' Gift Exchange</h1>
+    <h1 style="text-align: center">Your person is <span style="color:#9c0302"> '. $test . '</span></h1>
+    </body>'); 
+}
+ 
 
 /**
  * This example shows settings to use when sending via Google's Gmail servers.
@@ -29,7 +36,7 @@ $mail->isSMTP();
 // 0 = off (for production use)
 // 1 = client messages
 // 2 = client and server messages
-$mail->SMTPDebug = 2;
+$mail->SMTPDebug = 0;
 //Set the hostname of the mail server
 $mail->Host = 'smtp.gmail.com';
 // use
@@ -60,18 +67,21 @@ for($i = 0; $i < count($arr); $i++) {
     //Set who the message is to be sent to
     $mail->addAddress($arr[$i]->email, $arr[$i]->name);
     //Set the subject line
-    $mail->Subject = $title . ' ezGIFTex';
+    $mail->Subject = $title . ' Gift Exchange';
     //Read an HTML message body from an external file, convert referenced images to embedded,
     //convert HTML into a basic plain-text alternative body
     //$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-    $mail->Body = "Your person is " . $arr[$i]->chosenName;
+    $mail->Body = emailBody($arr[$i]->chosenName, $title);
     //Replace the plain text body with one created manually
-    $mail->AltBody = 'This is a plain-text message body';
+    $mail->AltBody = 'Your person for ' . $title . ' exchange';
     //Attach an image file
     if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo;
+        echo "Error" . $mail->ErrorInfo;       
+        break;
     } else {
-        echo "Message sent!";
+        if($i == 1) {
+            echo "Sent";
+        }
         //Section 2: IMAP
         //Uncomment these to save your message in the 'Sent Mail' folder.
         #if (save_mail($mail)) {
