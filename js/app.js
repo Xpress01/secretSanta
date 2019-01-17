@@ -211,12 +211,11 @@ var UIController = (function () {
         modalSubmitErrorCheck: document.querySelector('#modal-submit-error-check'),
         modalSubmitErrorMail: document.querySelector('#modal-submit-error-mail'),
 
+        //FORM 
         formBox: document.querySelector('#form-box'),
         formContainer: document.querySelector('#form-container'),
-        
-        
 
-        
+        footer: document.querySelector('.footer')
         
     }
 
@@ -300,6 +299,14 @@ var UIController = (function () {
             DOMelements.modalSubmitErrorMail.style.display = "inherit";
         }, 
 
+        hideFooter: function() {
+            DOMelements.footer.style.display = "none"; 
+        },
+
+        showFooter: function() {
+            DOMelements.footer.style.display = "table-row";
+        }
+
     }
 
 })();
@@ -365,6 +372,9 @@ var controller = (function (selCtrl, UICtrl) {
             
            //Close Modal
             $( '#formModal' ).modal( 'hide' ); 
+
+            //Show Footer 
+            UICtrl.showFooter(); 
             
         }
 
@@ -374,6 +384,9 @@ var controller = (function (selCtrl, UICtrl) {
 
         //Clear UI Fields
         UICtrl.clearFields();
+
+        //Hide Footer 
+        UICtrl.hideFooter();
 
         //Clear Data
         selCtrl.clearData();

@@ -1,0 +1,44 @@
+.footer {
+  display: table-row;
+  height: 3rem; 
+  background-color: $color-primary;
+  display: none; 
+
+  &__container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo-box {
+    padding: .5rem; 
+  }
+
+  &__logo {
+    height: 2rem; 
+  }
+
+  &__links {
+    padding-right: 1rem;
+    font-size: .8rem;
+    font-weight: 700;
+  }
+
+  &__link-item {
+    color: $color-white;
+
+    &:not(:last-child) {
+      padding-right: 1rem;
+    }
+
+    &:hover {
+      text-decoration: none; 
+      color: rgb(182, 182, 182); 
+    }
+  }
+
+  &--show {
+    display: table-row;
+  }
+}
