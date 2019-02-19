@@ -89,7 +89,9 @@ var selectorController = (function () {
                     var randNum = genNumber(data.selectArr.length);
 
                     if (!data.selectArr[randNum]) {
-                        genBool = false;
+                        console.log("No more matches");
+                        console.log(i);
+                        break;
                     }
 
                     var selectedPerson = data.selectArr[randNum];
@@ -136,8 +138,7 @@ var selectorController = (function () {
 
 
                     if (!genBool) {
-                        console.log("No more matches");
-                        break;
+                        
                     } 
                 }
             }
@@ -151,29 +152,31 @@ var selectorController = (function () {
             //Start choosing names
             genSanta();
 
-            return new Promise(function(resolve, reject) {
-                while (!genBool && c <= 10) {
-                    //Increase var c to prevent infinite loop
-                    c++;
 
-                    //Reset selector/duplicate array
-                    duplicateArr();
+            //!!!!!! RESET !!!!!!!
+            // return new Promise(function(resolve, reject) {
+            //     while (!genBool && c <= 10) {
+            //         //Increase var c to prevent infinite loop
+            //         c++;
 
-                    //Reset genBool
-                    genBool = true;
+            //         //Reset selector/duplicate array
+            //         duplicateArr();
 
-                    //Choose secret Santa
-                    genSanta();
+            //         //Reset genBool
+            //         genBool = true;
 
-                    //Break when everyone is selected or start again. 
-                    if (data.selectArr.length === 0) {
-                        break;
-                    } else if (c > 10) {
-                        reject("Check");
-                        break;
-                    }
-                }
-            });
+            //         //Choose secret Santa
+            //         genSanta();
+
+            //         //Break when everyone is selected or start again. 
+            //         if (data.selectArr.length === 0) {
+            //             break;
+            //         } else if (c > 10) {
+            //             reject("Check");
+            //             break;
+            //         }
+            //     }
+            // });
         },
 
         createSendArr: function () {
@@ -525,7 +528,8 @@ var controller = (function (selCtrl, UICtrl) {
             $( '#submitModal' ).modal( 'show' );
 
             //Assign secret santa
-            selCtrl.calcSecretSanta().catch(function(reject){submitModal(reject)});
+            selCtrl.calcSecretSanta()
+            // selCtrl.calcSecretSanta().catch(function(reject){submitModal(reject)});
 
             selCtrl.test();
 
