@@ -62,8 +62,10 @@
 
     &--exclude {
         font-size: 1.8em;
-        width: 2em;
+        width: 3em;
         text-align: center;
+        height: 2rem;
+        padding-left: .5rem;
 
         @media screen and (max-width: 769px) {
             width: 3em;

@@ -1,14 +1,22 @@
-html, 
-body {
+html {
     height: 100%;
-    display: table;
-    width: 100%; 
-    margin: 0;
-}
+    box-sizing: border-box;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
 
 body {
     font-size: 62.5%; 
     background: url(../../img/background.png);
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+
 }
 
 

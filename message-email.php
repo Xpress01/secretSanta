@@ -1,18 +1,10 @@
 <?php 
 
-$arr = $_POST['people_arr'];
-$title = $_POST['title'];
-$arr = json_decode($arr);
+$name = $_POST['name']; 
+$email  = $_POST['email'];
+$message = $_POST['message'];
 
-function emailBody($name, $title) {
-    return ('<body>
-    <p align="center" style="font-size: 22px; font-weight:800; padding:2em; background-color:#6e0000; color:white">Thank You For Using EZgiftEX!</p>
-    <p>&nbsp;</p>
-    <h1 style="text-align: center">' . $title . ' Gift Exchange</h1>
-    <h1 style="text-align: center">Your person is <span style="color:#9c0302"> '. $name . '</span></h1>
-    </body>'); 
-}
- 
+$body = '<h3>Hello</h3> <br> <b>Name</b>: ' . $name . '<br> <b>Email</b>: ' . $email . '<br> <p> ' . $message . '. </p>';
 
 /**
  * This example shows settings to use when sending via Google's Gmail servers.
@@ -21,6 +13,7 @@ function emailBody($name, $title) {
  * The IMAP section shows how to save this message to the 'Sent Mail' folder using IMAP commands.
  */
 //Import PHPMailer classes into the global namespace
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -60,37 +53,30 @@ $mail->Username = "ezgiftex@gmail.com";
 //Password to use for SMTP authentication
 $mail->Password = "Diablo!92501";
 //Set who the message is to be sent from
-$mail->setFrom('ezgiftex@gmail.com', 'EZGIFTEX');
-
-
-for($i = 0; $i < count($arr); $i++) {
-    //Set who the message is to be sent to
-    $mail->addAddress($arr[$i]->email, $arr[$i]->name);
-    //Set the subject line
-    $mail->Subject = $title . ' Gift Exchange';
-    //Read an HTML message body from an external file, convert referenced images to embedded,
-    //convert HTML into a basic plain-text alternative body
-    //$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-    $mail->Body = emailBody($arr[$i]->chosenName, $title);
-    //Replace the plain text body with one created manually
-    $mail->AltBody = 'Your person for ' . $title . ' exchange';
-    //Attach an image file
-    if (!$mail->send()) {
-        echo "Error" . $mail->ErrorInfo;       
-        break;
-    } else {
-        if($i == 1) {
-            echo "Sent";
-        }
-        //Section 2: IMAP
-        //Uncomment these to save your message in the 'Sent Mail' folder.
-        #if (save_mail($mail)) {
-        #    echo "Message saved!";
-        #}
-    }
-    $mail->clearAllRecipients();
-    
+$mail->setFrom('exgiftex@gmail.com', 'EZgiftEx');
+//Set who the message is to be sent to
+$mail->addAddress('vijay@ramdass.co', 'Vijay Ramdass');
+//Set the subject line
+$mail->Subject = 'EZgiftEx Technical Support';
+//Read an HTML message body from an external file, convert referenced images to embedded,
+//convert HTML into a basic plain-text alternative body
+//$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+$mail->Body = $body;
+//Replace the plain text body with one created manually
+$mail->AltBody = 'This is a plain-text message body';
+//Attach an image file
+if (!$mail->send()) {
+    echo "Mailer Error: " . $mail->ErrorInfo;
+} else {
+    echo "Sent!";
+    //Section 2: IMAP
+    //Uncomment these to save your message in the 'Sent Mail' folder.
+    #if (save_mail($mail)) {
+    #    echo "Message saved!";
+    #}
 }
+
+
 
 
 ?>

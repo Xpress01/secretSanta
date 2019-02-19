@@ -5,3 +5,9 @@ body {
 .font-color--error {
     color: $color-primary-light; 
 }
+
+.error {
+    margin-top: -.8rem;
+    color: $color-primary-light;
+    display: none;
+}

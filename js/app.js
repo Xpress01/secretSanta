@@ -29,6 +29,10 @@ var selectorController = (function () {
 
             var pers;
 
+            // if (!excl) {
+            //     excl = false;
+            // }
+
             pers = new person(nam, email, excl, id);
 
             data.peopleArr.push(pers);
@@ -62,48 +66,79 @@ var selectorController = (function () {
 
             function genSanta() {
 
+                    //////////////// REFACTOR!!! ////////////////
                 for (i = 0; i < data.peopleArr.length; i++) {
-                    var person, randNum, selectedPerson, n;
 
-                    person = data.peopleArr[i];
-                    randNum = genNumber(data.selectArr.length);
-                    selectedPerson = data.selectArr[randNum];
-                    //Add counter to prevent infinite loop 
-                    n = 0;
+                    var person = data.peopleArr[i]; 
+                    var tempArr = []; 
 
-                    console.log(randNum);
-
-                    //Make sure person's exclude is not selected and self. 
-                    while (selectedPerson.id == person.id || person.exclude === selectedPerson.id && n <= 5) {
-
-                        n++;
-                        randNum = genNumber(data.selectArr.length);
-                        selectedPerson = data.selectArr[randNum];
-
-                        if (selectedPerson.id !== person.id && person.exclude !== selectedPerson.id) {
-                            console.log("new number " + randNum);
-                            break;
-
-                        } else if (n > 5) {
-                            console.log('While loop end');
-                            genBool = false;
-                            break;
-                        }
-
+                    // Remove current person from the selection array and store in a temp array
+                    if (data.selectArr.find(el => el.id === person.id)) {
+                        tempArr = tempArr.concat( data.selectArr.splice(data.selectArr.indexOf(data.selectArr.find(el => el.id === person.id)), 1) )
                     }
 
-                    if (genBool) {
-                        //Add selected person to person object
-                        person.chosen = selectedPerson;
+                    // Check to see if current person has excluded anyone. 
+                    if(person.exclude >= 0) {
+                        // If they do, remove that person and store into the previous temp array if they are still in the selection array
+                        if (data.selectArr.find(el => el.id === person.exclude)) {
+                            tempArr = tempArr.concat( data.selectArr.splice( data.selectArr.indexOf( data.selectArr.find(el => el.id === person.exclude ) ), 1 ) )
+                        }
+                    }
 
-                        //Remove selected person from array
-                        data.selectArr.splice(randNum, 1);
+                    // Generate a random number based on selection array length and assign that random person to current person. 
+                    var randNum = genNumber(data.selectArr.length);
 
-                    } else {
+                    if (!data.selectArr[randNum]) {
+                        genBool = false;
+                    }
+
+                    var selectedPerson = data.selectArr[randNum];
+                    person.chosen = selectedPerson;
+
+                    // Remove random person from the selection array.
+                    data.selectArr.splice(randNum, 1);
+
+                    // Add current person back into and/if excluded person.
+                    data.selectArr = data.selectArr.concat(tempArr);
+                    
+                    
+                    // Restart process 
+
+                    //OLD CODE
+                    // var person, randNum, selectedPerson, n;
+
+                    // person = data.peopleArr[i];
+                    // randNum = genNumber(data.selectArr.length);
+                    // selectedPerson = data.selectArr[randNum];
+                    // //Add counter to prevent infinite loop 
+                    // n = 0;
+
+                    // console.log(randNum);
+
+                    // //Make sure person's exclude is not selected and self. 
+                    // while (selectedPerson.id == person.id || person.exclude === selectedPerson.id && n <= 5) {
+
+                    //     n++;
+                    //     randNum = genNumber(data.selectArr.length);
+                    //     selectedPerson = data.selectArr[randNum];
+
+                    //     if (selectedPerson.id !== person.id && person.exclude !== selectedPerson.id) {
+                    //         console.log("new number " + randNum);
+                    //         break;
+
+                    //     } else if (n > 5) {
+                    //         console.log('While loop end');
+                    //         genBool = false;
+                    //         break;
+                    //     }
+
+                    // }
+
+
+                    if (!genBool) {
                         console.log("No more matches");
                         break;
-                    }
-
+                    } 
                 }
             }
 
@@ -152,8 +187,6 @@ var selectorController = (function () {
                 data.completeArr.push(result);
 
             }
-
-
         },
 
         sendEmail: function() {
@@ -169,13 +202,11 @@ var selectorController = (function () {
                 }, function(data) {
                     resolve(data);
                 });
-            });
-            
-            
+            });    
         },
 
         test: function () {
-
+            console.log(data.peopleArr);
         }
     }
 
@@ -304,7 +335,7 @@ var UIController = (function () {
         },
 
         showFooter: function() {
-            DOMelements.footer.style.display = "table-row";
+            DOMelements.footer.style.display = "inherit";
         }
 
     }
@@ -496,11 +527,15 @@ var controller = (function (selCtrl, UICtrl) {
             //Assign secret santa
             selCtrl.calcSecretSanta().catch(function(reject){submitModal(reject)});
 
-            //Create a simple array to transport to PHP 
-            selCtrl.createSendArr();
+            selCtrl.test();
 
-            //Send Email 
-            selCtrl.sendEmail().then(function(resolve){submitModal(resolve)});
+
+            // !!!!!PRODUCTION!!!!! 
+            // //Create a simple array to transport to PHP 
+            // selCtrl.createSendArr();
+
+            // // //Send Email 
+            // selCtrl.sendEmail().then(function(resolve){submitModal(resolve)});
 
             
         }
@@ -512,13 +547,6 @@ var controller = (function (selCtrl, UICtrl) {
         init: function () {
             //Setup Event Listeners
             setupEventListeners();
-
-            //Diplay Modal 
-            $(window).on('load', function () {
-                $('#welcomeModal').modal('show');
-            });
-
-            console.log('App Started');
         }
 
 

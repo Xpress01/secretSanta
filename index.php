@@ -31,8 +31,6 @@
 </head>
 <body>
 
-
-
 <!-- Modals -->
 
 <!-- FORM MODAL -->
@@ -128,6 +126,8 @@
   </div>
 </div>
 
+<?php include('inc/nav.php'); ?>
+
 <!-- HEADER -->
 <header class="header">
   <div class="header__logo-box">
@@ -159,23 +159,16 @@
   </div> 
 </div>
 
-<footer class="footer">
-  <div class="footer__container">
-    <div class="footer__logo-box">
-      <img src="/img/logo.png" alt="logo" id="logo" class="footer__logo">
-    </div>
-    <div class="footer__links">
-      <a href="#" class="footer__link-item">Contact</a>
-      <a href="#" class="footer__link-item">Terms &amp; Conditions</a>
-      <a href="#" class="footer__link-item">Privacy Policy</a>
-    </div>
-  </div> 
- </footer> 
+<?php include('inc/footer.php'); ?>
+
+<!-- Contact Modal -->
+<?php include('inc/contact-modal.php'); ?>
     
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script src="/js/app.js"></script>
+<script src="/js/main-page.js"></script>
 </body>
 </html>

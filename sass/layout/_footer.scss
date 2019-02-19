@@ -1,8 +1,11 @@
 .footer {
-  display: table-row;
   height: 3rem; 
   background-color: $color-primary;
-  display: none; 
+  width: 100%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
   &__container {
     display: flex;
@@ -38,7 +41,4 @@
     }
   }
 
-  &--show {
-    display: table-row;
-  }
 }

@@ -6,6 +6,9 @@
 <title>Privacy Policy | EZgiftEX</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <link rel="shortcut icon" type="image/png" href="img/favicon.png">
 <link rel="stylesheet" href="/css/style.css">
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -13,7 +16,10 @@
 </head>
 <body>
 
-<div class="privacy__container">
+<!-- NavBar -->
+<?php include('inc/nav.php'); ?>
+
+<div class="legal__container">
     <h1>Privacy Policy</h1>
 
     <p>EZgiftEX ("us", "we", or "our") operates the www.ezgiftex.com website (the "Service").</p>
@@ -118,18 +124,12 @@
     <p>If you have any questions about this Privacy Policy, please contact us:</p>
 </div>
 
-<footer class="footer footer--show">
-  <div class="footer__container">
-    <div class="footer__logo-box">
-      <img src="/img/logo.png" alt="logo" id="logo" class="footer__logo">
-    </div>
-    <div class="footer__links">
-      <a href="#" class="footer__link-item">Contact</a>
-      <a href="#" class="footer__link-item">Terms &amp; Conditions</a>
-      <a href="#" class="footer__link-item">Privacy Policy</a>
-    </div>
-  </div> 
-</footer> 
+<!-- Footer -->
+<?php include('inc/footer.php'); ?>
 
+<!-- Contact Modal -->
+<?php include('inc/contact-modal.php'); ?>
+
+<script src="/js/page.js"></script>
 </body>
 </html>
