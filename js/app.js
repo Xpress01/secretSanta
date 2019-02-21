@@ -48,7 +48,92 @@ var selectorController = (function () {
             data.peopleArr = [];
             data.selectArr = [];
             data.completeArr = [];
-        },
+		},
+		
+		genSanta: () => {
+			function genNumber(y) {
+                //y is the maximum range *max number not included
+                return Math.floor((Math.random() * y));
+            }
+
+			return new Promise((resolve, reject) => {
+
+			//////////////// REFACTOR!!! ////////////////
+			for (i = 0; i < data.peopleArr.length; i++) {
+
+				var person = data.peopleArr[i]; 
+				var tempArr = []; 
+
+				// Remove current person from the selection array and store in a temp array
+				if (data.selectArr.find(el => el.id === person.id)) {
+					tempArr = tempArr.concat( data.selectArr.splice(data.selectArr.indexOf(data.selectArr.find(el => el.id === person.id)), 1) )
+				}
+
+				// Check to see if current person has excluded anyone. 
+				if(person.exclude >= 0) {
+					// If they do, remove that person and store into the previous temp array if they are still in the selection array
+					if (data.selectArr.find(el => el.id === person.exclude)) {
+						tempArr = tempArr.concat( data.selectArr.splice( data.selectArr.indexOf( data.selectArr.find(el => el.id === person.exclude ) ), 1 ) )
+					}
+				}
+
+				// Generate a random number based on selection array length and assign that random person to current person. 
+				var randNum = genNumber(data.selectArr.length);
+
+				if (!data.selectArr[randNum]) {
+
+					const swapSanta = (person, personLeft, newPerson) => {
+						//Store random person's chosen person in variable 
+						let chosenPerson = newPerson.chosen; 
+						//Assign random person's chosen person as the one in the tempArr 
+						newPerson.chosen = personLeft; 
+						//Assign current person's chosen person as the one in the variable 
+						person.chosen = chosenPerson;
+
+					}
+
+					let n = 0; 
+					//Choose random person from personArr not including self
+					let newPerson = data.peopleArr[genNumber(data.peopleArr.length)]; 
+					let personLeft = tempArr[genNumber(tempArr.length)]; 
+
+					//Make sure random person's exclude does not equal person left in tempArr **NOT DONE**
+					if(person.id === newPerson.id || person.id === newPerson.chosen.id || newPerson.id === personLeft.id || newPerson.exclude === personLeft.id) {
+						while(person.id === newPerson.id || person.id === newPerson.chosen.id || newPerson.id === personLeft.id || newPerson.exclude === personLeft.id || n <= 10) {
+							newPerson = data.peopleArr[genNumber(data.peopleArr.length)]; 
+							n++; 
+
+							if (n > 10) {
+								reject('Check'); 
+								break;
+							}
+
+							if(!newPerson.chosen || person.id === newPerson.chosen.id || newPerson.id === personLeft.id || newPerson.exclude === personLeft.id) {
+								continue; 
+							} else if(person.id != newPerson.id || person.id != newPerson.chosen.id || newPerson.id != personLeft.id || newPerson.exclude != personLeft.id) {
+								swapSanta(person, personLeft, newPerson);
+								break; 
+							} 
+						}
+					} else {
+						swapSanta(person, personLeft, newPerson);
+					}
+					
+					
+				} else {
+					var selectedPerson = data.selectArr[randNum];
+					person.chosen = selectedPerson;
+
+					// Remove random person from the selection array.
+					data.selectArr.splice(randNum, 1);
+
+					// Add current person back into and/if excluded person.
+					data.selectArr = data.selectArr.concat(tempArr);
+				}
+			}
+			});
+
+		},
 
         calcSecretSanta: function () {
 
@@ -89,19 +174,68 @@ var selectorController = (function () {
                     var randNum = genNumber(data.selectArr.length);
 
                     if (!data.selectArr[randNum]) {
+
+						const swapSanta = (person, personLeft, newPerson) => {
+							//Store random person's chosen person in variable 
+							let chosenPerson = newPerson.chosen; 
+							//Assign random person's chosen person as the one in the tempArr 
+							newPerson.chosen = personLeft; 
+							//Assign current person's chosen person as the one in the variable 
+							person.chosen = chosenPerson;
+
+							console.log("swap santa ran")
+
+						}
+
                         console.log("No more matches");
-                        console.log(i);
-                        break;
-                    }
+                        console.log(person);
+                        let n = 0; 
+                        //Choose random person from personArr not including self
+                        let newPerson = data.peopleArr[genNumber(data.peopleArr.length)]; 
+                        let personLeft = tempArr[genNumber(tempArr.length)]; 
+                        console.log(data.peopleArr);
+						console.log(newPerson); 
+						console.log(personLeft);
+						//Make sure random person's exclude does not equal person left in tempArr **NOT DONE**
+                        if(person.id === newPerson.id || person.id === newPerson.chosen.id || newPerson.id === personLeft.id) {
+							while(person.id === newPerson.id || person.id === newPerson.chosen.id || newPerson.id === personLeft.id || n <= 1) {
+								newPerson = data.peopleArr[genNumber(data.peopleArr.length)]; 
+								n++; 
+								console.log('In while loop');
+								console.log(n);
+								if (n > 1) {
+									return new Promise(function(reject) {
+										reject(Check); 
+									});
+								}
 
-                    var selectedPerson = data.selectArr[randNum];
-                    person.chosen = selectedPerson;
+								if(!newPerson.chosen || person.id === newPerson.chosen.id || newPerson.id === personLeft.id) {
+									continue; 
+								} else if(person.id != newPerson.id || person.id != newPerson.chosen.id || newPerson.id != personLeft.id) {
+									console.log('Person chosen:');
+									console.log(newPerson);
+									console.log(newPerson.chosen.id)
+									swapSanta(person, personLeft, newPerson);
+									break; 
+								} 
+                        	}
+                        } else {
+							swapSanta(person, personLeft, newPerson);
+						}
+                        
+                        
+                    } else {
+						var selectedPerson = data.selectArr[randNum];
+						person.chosen = selectedPerson;
+	
+						// Remove random person from the selection array.
+						data.selectArr.splice(randNum, 1);
+	
+						// Add current person back into and/if excluded person.
+						data.selectArr = data.selectArr.concat(tempArr);
+					}
 
-                    // Remove random person from the selection array.
-                    data.selectArr.splice(randNum, 1);
-
-                    // Add current person back into and/if excluded person.
-                    data.selectArr = data.selectArr.concat(tempArr);
+                    
                     
                     
                     // Restart process 
@@ -136,10 +270,6 @@ var selectorController = (function () {
 
                     // }
 
-
-                    if (!genBool) {
-                        
-                    } 
                 }
             }
 
@@ -528,18 +658,14 @@ var controller = (function (selCtrl, UICtrl) {
             $( '#submitModal' ).modal( 'show' );
 
             //Assign secret santa
-            selCtrl.calcSecretSanta()
-            // selCtrl.calcSecretSanta().catch(function(reject){submitModal(reject)});
+            // selCtrl.calcSecretSanta()
+            selCtrl.genSanta().catch((reject) => {submitModal(reject)});
 
-            selCtrl.test();
+            //Create a simple array to transport to PHP 
+            selCtrl.createSendArr();
 
-
-            // !!!!!PRODUCTION!!!!! 
-            // //Create a simple array to transport to PHP 
-            // selCtrl.createSendArr();
-
-            // // //Send Email 
-            // selCtrl.sendEmail().then(function(resolve){submitModal(resolve)});
+            // //Send Email 
+            selCtrl.sendEmail().then(function(resolve){submitModal(resolve)});
 
             
         }
